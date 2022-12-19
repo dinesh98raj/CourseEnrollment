@@ -1,0 +1,78 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>UserServlet</servlet-name>
+  	<display-name>UserServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.UserServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>UserServlet</servlet-name>
+  	<url-pattern>/v1/users</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>UserDetailServlet</servlet-name>
+  	<display-name>UserDetailServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.UserDetailServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+  	<servlet-name>UserDetailServlet</servlet-name>
+  	<url-pattern>/v1/users/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>CourseServlet</servlet-name>
+  	<display-name>CourseServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.CourseServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+  	<servlet-name>CourseServlet</servlet-name>
+  	<url-pattern>/v1/courses</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>CourseDetailsServlet</servlet-name>
+  	<display-name>CourseDetailsServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.CourseDetailsServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>CourseDetailsServlet</servlet-name>
+  	<url-pattern>/v1/courses/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>EnrollementServlet</servlet-name>
+  	<display-name>EnrollementServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.EnrollementServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>EnrollementServlet</servlet-name>
+  	<url-pattern>/v1/enrollment</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>EnrollmentDetailServlet</servlet-name>
+  	<display-name>EnrollmentDetailServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.demo.EnrollmentDetailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>EnrollmentDetailServlet</servlet-name>
+  	<url-pattern>/v1/enrollment/*</url-pattern>
+  </servlet-mapping>
+  	
+</web-app>
