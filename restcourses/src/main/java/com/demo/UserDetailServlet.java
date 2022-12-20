@@ -50,5 +50,34 @@ public class UserDetailServlet extends HttpServlet {
 		pw.write(userString);
 		pw.close();
 	}
+    
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Integer userId = Util.getIdFromPath(request);
+		Dummydb db = Dummydb.getInstance();
+		
+		if(userId == 0) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			response.setContentType("application/json");
+			return;
+		}
+		
+		User user = db.findUserById(userId);
+		
+		if(user == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setContentType("application/json");
+			PrintWriter pw = response.getWriter();
+			pw.write("{\"message\":\"resourse not found\"}");
+			pw.close();
+			return;
+		}
+		
+		db.deleteUser(userId);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		
+	}
 
 }

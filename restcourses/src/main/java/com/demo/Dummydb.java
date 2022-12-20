@@ -119,4 +119,12 @@ public class Dummydb {
 		return courseEnrollmentlist;
 	}
 	
+	public void deleteCourseEnrollmen(int id) throws IndexOutOfBoundsException{
+		courseEnrollmentlist.remove(id);
+	}
+	
+	public void deleteCourseEnrollmen(CourseEnrollment ce){
+		courseEnrollmentlist.remove(ce);
+	}
+	
 }

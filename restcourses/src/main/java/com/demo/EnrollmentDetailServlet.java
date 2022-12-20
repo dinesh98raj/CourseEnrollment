@@ -53,5 +53,45 @@ public class EnrollmentDetailServlet extends HttpServlet {
 //	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		doGet(request, response);
 //	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Integer courseId = Util.getIdFromPath(request);
+		Dummydb db = Dummydb.getInstance();
+		
+		if(courseId == 0) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			response.setContentType("application/json");
+			return;
+		}
+		
+		Course course = db.findCourseById(courseId);
+		
+		if(course == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setContentType("application/json");
+			PrintWriter pw = response.getWriter();
+			pw.write("{\"message\":\"resourse not found\"}");
+			pw.close();
+			return;
+		}
+		
+		CourseEnrollment crsenroll = db.findCourseEnrollementByCourseId(courseId);
+		
+		if(crsenroll == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setContentType("application/json");
+			PrintWriter pw = response.getWriter();
+			pw.write("{\"message\":\"resourse not found\"}");
+			pw.close();
+			return;
+		}
+		
+		db.deleteCourseEnrollmen(crsenroll);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		
+	}
 
 }
