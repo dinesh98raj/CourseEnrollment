@@ -1,7 +1,9 @@
 package com.demo;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -28,7 +30,15 @@ public class UserDetailServlet extends HttpServlet {
 			return;
 		}
 		
-		User user = db.findUserById(usrId);
+		User user = null;
+		try {
+			user = db.findUserById(usrId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("user detail: sql exception");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    	return;
+		}
 		
 		if(user == null) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -60,10 +70,19 @@ public class UserDetailServlet extends HttpServlet {
 			response.setContentType("application/json");
 			return;
 		}
+	
+		boolean deleteresult = false;
 		
-		User user = db.findUserById(userId);
+		try {
+			deleteresult = db.deleteUser(userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("use delete: sql exception");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    	return;
+		}
 		
-		if(user == null) {
+		if(!deleteresult) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			PrintWriter pw = response.getWriter();
@@ -71,8 +90,6 @@ public class UserDetailServlet extends HttpServlet {
 			pw.close();
 			return;
 		}
-		
-		db.deleteUser(userId);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

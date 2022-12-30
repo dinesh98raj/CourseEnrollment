@@ -1,7 +1,9 @@
 package com.demo;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,13 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Dummydb db = Dummydb.getInstance();
 		
-		List<User> userArray = db.getUserlist();
+		List<User> userArray = null;
+		try {
+			userArray = db.getUserList();
+		} catch (SQLException e) {
+			System.out.println("Sql exception");
+		}
+		
 		ObjectMapper om = new ObjectMapper();
 		if(userArray.isEmpty() == true) {
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
@@ -35,7 +43,6 @@ public class UserServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
 		PrintWriter pw = response.getWriter();
 		pw.write(userJSONString);
 		pw.close();
@@ -63,9 +70,15 @@ public class UserServlet extends HttpServlet {
 	    
 	    Dummydb db = Dummydb.getInstance();
 	    
-	    int id = db.getUserId();
-	    u.setId(id);
-	    db.addUser(u);
+	    try {
+			db.addUser(u);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("user: sql exception insert");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    	return;
+		}
+	    
 		String userString = om.writeValueAsString(u);
 		
 		response.setStatus(HttpServletResponse.SC_CREATED);

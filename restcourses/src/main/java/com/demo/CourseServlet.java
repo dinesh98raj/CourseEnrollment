@@ -2,6 +2,7 @@ package com.demo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,9 +23,14 @@ public class CourseServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Dummydb db = Dummydb.getInstance();
 		
-		List<Course> courseArray = db.getCourselist();
+		List<Course> courseArray = null;
+		try {
+			courseArray = db.getCourselist();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("ccourse: sql exception");
+		}
 		ObjectMapper om = new ObjectMapper();
-//		System.out.println(courseArray.isEmpty());
 		if(courseArray.isEmpty() == true) {
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			return;
@@ -43,13 +49,13 @@ public class CourseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ObjectMapper om = new ObjectMapper();
 		Course c = null;
-		System.out.println(request.getInputStream());
 	    try {
 			c = om.readValue(request.getInputStream(), Course.class);
 	    	
 	    } catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+	    
 	    System.out.println(c);
 	    if(c == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -62,17 +68,23 @@ public class CourseServlet extends HttpServlet {
 	    
 	    Dummydb db = Dummydb.getInstance();
 	    
-	    int id = db.getCourseId();
-	    c.setId(id);
-	    db.addCourse(c);
-		String userString = om.writeValueAsString(c);
+	    try {
+			db.addCourse(c);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("user: sql exception insert");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	    	return;
+		}
+	    
+		String courseString = om.writeValueAsString(c);
 		
 		response.setStatus(HttpServletResponse.SC_CREATED);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
 		PrintWriter pw = response.getWriter();
-		pw.write(userString);
+		pw.write(courseString);
 		pw.close();
 	}
 

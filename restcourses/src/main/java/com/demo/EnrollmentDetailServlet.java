@@ -1,7 +1,9 @@
 package com.demo;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +29,13 @@ public class EnrollmentDetailServlet extends HttpServlet {
 			return;
 		}
 		
-		CourseEnrollment course = db.findCourseEnrollementByCourseId(courseId);
+		CourseEnrollment course = null;
+		try {
+			course = db.getCourseEnrollmentByCourseId(courseId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("course enrollment sql exception");
+		}
 		
 		if(course == null) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -64,9 +72,17 @@ public class EnrollmentDetailServlet extends HttpServlet {
 			return;
 		}
 		
-		Course course = db.findCourseById(courseId);
+		boolean deleteresult = false;
+		try {
+			deleteresult = db.deleteCourseEnrollment(courseId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("course enrollment delete exception");
+			
+			return;
+		}
 		
-		if(course == null) {
+		if(!deleteresult) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			PrintWriter pw = response.getWriter();
@@ -74,19 +90,6 @@ public class EnrollmentDetailServlet extends HttpServlet {
 			pw.close();
 			return;
 		}
-		
-		CourseEnrollment crsenroll = db.findCourseEnrollementByCourseId(courseId);
-		
-		if(crsenroll == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			response.setContentType("application/json");
-			PrintWriter pw = response.getWriter();
-			pw.write("{\"message\":\"resourse not found\"}");
-			pw.close();
-			return;
-		}
-		
-		db.deleteCourseEnrollmen(crsenroll);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

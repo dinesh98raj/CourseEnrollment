@@ -8,6 +8,13 @@ public class Course {
 	public Course() {
 	}
 		
+	public Course(int id, String name, int capacity) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.capacity = capacity;
+	}
+	
 	public Course(String name, int capacity) {
 		super();
 		this.name = name;
