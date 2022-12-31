@@ -24,7 +24,7 @@ public class UserDetailServlet extends HttpServlet {
 		Integer usrId = Util.getIdFromPath(request);
 		Dummydb db = Dummydb.getInstance();
 		
-		if(usrId == 0) {
+		if(usrId == -1) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			return;
@@ -65,7 +65,7 @@ public class UserDetailServlet extends HttpServlet {
 		Integer userId = Util.getIdFromPath(request);
 		Dummydb db = Dummydb.getInstance();
 		
-		if(userId == 0) {
+		if(userId == -1) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			return;

@@ -23,7 +23,7 @@ public class EnrollmentDetailServlet extends HttpServlet {
 		Integer courseId = Util.getIdFromPath(request);
 		Dummydb db = Dummydb.getInstance();
 		
-		if(courseId == 0) {
+		if(courseId == -1) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			return;
@@ -58,15 +58,12 @@ public class EnrollmentDetailServlet extends HttpServlet {
 		pw.close();
 	}
 
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		doGet(request, response);
-//	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Integer courseId = Util.getIdFromPath(request);
 		Dummydb db = Dummydb.getInstance();
 		
-		if(courseId == 0) {
+		if(courseId == -1) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			response.setContentType("application/json");
 			return;

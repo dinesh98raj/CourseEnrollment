@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Util {
 	public static int getIdFromPath(HttpServletRequest req) {
 		String path =req.getPathInfo();
-		int id = 0;
+		int id = -1;
 		if (path != null){
 			Pattern p = Pattern.compile("^/(\\d{1,7})$");
 	    	Matcher m = p.matcher(path);
